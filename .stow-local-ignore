@@ -1,0 +1,6 @@
+.git/
+README.md
+install.sh
+.editorconfig
+.gitignore
+.shellcheckrc
