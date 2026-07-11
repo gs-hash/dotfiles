@@ -8,6 +8,9 @@ PACKAGES=(
     tmux
     nvim
     starship
+    alacritty
+    zellij
+    zsh
 )
 
 stow "${PACKAGES[@]}"
