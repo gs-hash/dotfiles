@@ -42,5 +42,9 @@ return {
       },
     })
     vim.lsp.enable('rust_analyzer')
+
+    -- bash
+    vim.lsp.config('bashls', {})
+    vim.lsp.enable('bashls')
   end,
 }

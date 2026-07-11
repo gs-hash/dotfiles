@@ -9,3 +9,4 @@ PACKAGES=(
 )
 
 stow "${PACKAGES[@]}"
+echo $HOME

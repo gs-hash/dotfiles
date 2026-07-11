@@ -8,10 +8,22 @@ return {
         lua = { 'stylua' },
         markdown = { 'prettier' },
         java = { 'google-java-format' },
+        sh = { 'shfmt' },
+        bash = { 'shfmt' },
+        zsh = { 'shfmt' },
       },
       format_on_save = {
         timeout_ms = 500,
         lsp_fallback = false,
+      },
+      formatters = {
+        shfmt = {
+          prepend_args = {
+            '-i',
+            '4',
+            '-ci',
+          },
+        },
       },
     })
   end,
