@@ -13,4 +13,4 @@ PACKAGES=(
     zsh
 )
 
-stow "${PACKAGES[@]}"
+stow -R "${PACKAGES[@]}"
