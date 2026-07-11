@@ -7,6 +7,7 @@ cd "$SCRIPT_DIR"
 PACKAGES=(
     tmux
     nvim
+    starship
 )
 
 stow "${PACKAGES[@]}"
