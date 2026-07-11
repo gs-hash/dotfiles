@@ -6,7 +6,7 @@ cd "$SCRIPT_DIR"
 
 PACKAGES=(
     tmux
+    nvim
 )
 
 stow "${PACKAGES[@]}"
-echo $HOME
