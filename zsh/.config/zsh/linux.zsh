@@ -19,10 +19,10 @@ path+=(
   "/usr/local/go/bin"
   "$HOME/work/bin"
   "$HOME/skrypty"
-	"$HOME/.atuin/bin"
-	"$HOME/.dotnet/tools"
+  "$HOME/.atuin/bin"
+  "$HOME/.dotnet/tools"
   "$HOME/.cargo/bin"
-	"/opt/homebrew/bin"
+  "/home/linuxbrew/.linuxbrew/bin"
 )
 # Aliases
 alias getidf='source ~/programowanie/esp/esp-idf/export.sh'
