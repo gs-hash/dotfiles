@@ -22,6 +22,7 @@ path+=(
   "$HOME/.atuin/bin"
   "$HOME/.dotnet/tools"
   "$HOME/.cargo/bin"
+  "$HOME/.local/bin"
   "/home/linuxbrew/.linuxbrew/bin"
 )
 # Aliases
