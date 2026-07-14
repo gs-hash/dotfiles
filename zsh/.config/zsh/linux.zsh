@@ -25,6 +25,7 @@ path+=(
   "/home/linuxbrew/.linuxbrew/bin"
 )
 # Aliases
+alias bat='batcat'
 alias getidf='source ~/programowanie/esp/esp-idf/export.sh'
 alias schowek='xclip -selection clipboard'
 
