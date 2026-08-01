@@ -7,6 +7,13 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         markdown = { 'prettier' },
+        html = { 'prettier' },
+        css = { 'prettier' },
+        scss = { 'prettier' },
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
+        json = { 'prettier' },
+        yaml = { 'prettier' },
         java = { 'google-java-format' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
