@@ -12,3 +12,6 @@ esac
 source "$XDG_CONFIG_HOME/zsh/tools.zsh"
 source "$XDG_CONFIG_HOME/zsh/plugins.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"
+
+# opencode
+export PATH=/home/spider/.opencode/bin:$PATH
