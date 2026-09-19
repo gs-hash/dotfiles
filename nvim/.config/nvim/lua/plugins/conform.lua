@@ -15,12 +15,13 @@ return {
         json = { 'prettier' },
         yaml = { 'prettier' },
         java = { 'google-java-format' },
+        cs = { 'csharpier' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
       },
       format_on_save = {
         timeout_ms = 500,
-        lsp_fallback = false,
+        lsp_format = 'never',
       },
       formatters = {
         shfmt = {

@@ -1,7 +1,5 @@
 -- JDTLS (Java LSP) configuration
 local jdtls = require('jdtls')
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-local workspace_dir = vim.env.HOME .. '/.cache/jdtls/workspace/' .. project_name
 local root_dir = require('jdtls.setup').find_root({
   '.git',
   'mvnw',
@@ -13,60 +11,31 @@ if not root_dir then
   return
 end
 
-local keymaps = require('spider.lsp_keymaps')
+if vim.fn.executable('jdtls') == 0 then
+  vim.notify_once('JDTLS is not installed. Run: brew install jdtls', vim.log.levels.WARN)
+  return
+end
 
-local bundles = {}
+local project_name = vim.fn.fnamemodify(root_dir, ':t')
+local workspace_dir = vim.fn.stdpath('cache') .. '/jdtls/workspace/' .. project_name
 
-vim.list_extend(
-  bundles,
-  vim.split(
-    vim.fn.glob(
-      vim.env.HOME .. '/.local/share/java/java-debug/com.microsoft.java.debug.plugin/target/*.jar',
-      1
-    ),
-    '\n'
-  )
+local debug_bundles = vim.fn.glob(
+  vim.fn.expand('~/.local/share/java/java-debug/com.microsoft.java.debug.plugin/target/*.jar'),
+  false,
+  true
 )
+local test_bundles =
+  vim.fn.glob(vim.fn.expand('~/.local/share/java/vscode-java-test/server/*.jar'), false, true)
 
-vim.list_extend(
-  bundles,
-  vim.split(
-    vim.fn.glob(vim.env.HOME .. '/.local/share/java/vscode-java-test/server/*.jar', 1),
-    '\n'
-  )
-)
-
-local launcher_jar =
-  vim.fn.glob(vim.env.HOME .. '/.local/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar', 1)
-
-launcher_jar = vim.split(launcher_jar, '\n')[1]
+local bundles = vim.list_extend(vim.deepcopy(debug_bundles), test_bundles)
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local config = {
   -- The command that starts the language server
-  -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
-    '/usr/lib/jvm/java-21-openjdk-amd64/bin/java',
-    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-    '-Dosgi.bundles.defaultStartLevel=4',
-    '-Declipse.product=org.eclipse.jdt.ls.core.product',
-    '-Dlog.protocol=true',
-    '-Dlog.level=ALL',
-    '-javaagent:' .. vim.env.HOME .. '/.local/share/java/lombok/lombok.jar',
-    '-Xmx4g',
-    '--add-modules=ALL-SYSTEM',
-    '--add-opens',
-    'java.base/java.util=ALL-UNNAMED',
-    '--add-opens',
-    'java.base/java.lang=ALL-UNNAMED',
-    -- Eclipse jdtls location
-    '-jar',
-    launcher_jar,
-    -- TODO Update this to point to the correct jdtls subdirectory for your OS (config_linux, config_mac, config_win, etc)
-    '-configuration',
-    vim.env.HOME .. '/.local/share/jdtls/config_linux',
+    'jdtls',
     '-data',
     workspace_dir,
   },
@@ -80,19 +49,11 @@ local config = {
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
   settings = {
     java = {
-      home = '/usr/lib/jvm/java-21-openjdk-amd64',
       eclipse = {
         downloadSources = true,
       },
       configuration = {
         updateBuildConfiguration = 'interactive',
-        -- TODO Update this by adding any runtimes that you need to support your Java projects and removing any that you don't have installed
-        runtimes = {
-          {
-            name = 'JavaSE-21',
-            path = '/usr/lib/jvm/java-21-openjdk-amd64',
-          },
-        },
       },
       maven = {
         downloadSources = true,
@@ -159,11 +120,10 @@ local config = {
 
 -- Needed for debugging
 config['on_attach'] = function(client, bufnr)
-  -- 🔑 Twoje keymapy LSP
-  keymaps.on_attach(client, bufnr)
-
-  jdtls.setup_dap({ hotcodereplace = 'auto' })
-  require('jdtls.dap').setup_dap_main_class_configs()
+  if #debug_bundles > 0 then
+    jdtls.setup_dap({ hotcodereplace = 'auto' })
+    require('jdtls.dap').setup_dap_main_class_configs()
+  end
 end
 
 -- This starts a new client & server, or attaches to an existing client & server based on the `root_dir`.

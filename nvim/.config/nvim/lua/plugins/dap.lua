@@ -3,7 +3,7 @@ return {
   config = function()
     local dap = require('dap')
 
-    dap.set_log_level('TRACE')
+    dap.set_log_level('INFO')
     dap.configurations.java = {
       {
         type = 'java',
@@ -15,55 +15,56 @@ return {
     }
 
     -- C#
-    dap.adapters.coreclr = {
-      type = 'executable',
-      command = 'netcoredbg',
-      args = { '--interpreter=vscode' },
-    }
+    local netcoredbg = vim.fn.exepath('netcoredbg')
+    local local_netcoredbg = vim.fn.expand('~/.local/share/netcoredbg/netcoredbg')
+    if netcoredbg == '' and vim.fn.executable(local_netcoredbg) == 1 then
+      netcoredbg = local_netcoredbg
+    end
 
-    dap.configurations.cs = {
-      {
-        type = 'coreclr',
-        name = 'Launch',
-        request = 'launch',
-        program = function()
-          return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/', 'file')
-        end,
-      },
-    }
+    if netcoredbg ~= '' then
+      dap.adapters.coreclr = {
+        type = 'executable',
+        command = netcoredbg,
+        args = { '--interpreter=vscode' },
+      }
+
+      dap.configurations.cs = {
+        {
+          type = 'coreclr',
+          name = 'Launch',
+          request = 'launch',
+          program = function()
+            return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+          end,
+        },
+      }
+    end
 
     -- Rust
-    dap.adapters.codelldb = {
-      type = 'executable',
-      command = vim.fn.expand('~/.local/share/codelldb/extension/adapter/codelldb'),
-    }
+    local codelldb = vim.fn.exepath('codelldb')
+    local local_codelldb = vim.fn.expand('~/.local/share/codelldb/extension/adapter/codelldb')
+    if codelldb == '' and vim.fn.executable(local_codelldb) == 1 then
+      codelldb = local_codelldb
+    end
 
-    dap.configurations.rust = {
-      {
-        name = 'Launch Rust',
-        type = 'codelldb',
-        request = 'launch',
-        program = function()
-          -- 🔨 build projektu
-          os.execute('cargo build')
+    if codelldb ~= '' then
+      dap.adapters.codelldb = {
+        type = 'executable',
+        command = codelldb,
+      }
 
-          local cwd = vim.fn.getcwd()
-          local target = cwd .. '/target/debug/'
-
-          -- 🧠 spróbuj zgadnąć nazwę binarki (nazwa folderu)
-          local default = target .. vim.fn.fnamemodify(cwd, ':t')
-
-          -- jeśli istnieje → użyj
-          if vim.fn.filereadable(default) == 1 then
-            return default
-          end
-
-          -- fallback → wybór ręczny
-          return vim.fn.input('Executable: ', target, 'file')
-        end,
-        cwd = '${workspaceFolder}',
-        stopOnEntry = false,
-      },
-    }
+      dap.configurations.rust = {
+        {
+          name = 'Launch Rust',
+          type = 'codelldb',
+          request = 'launch',
+          program = function()
+            return vim.fn.input('Executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+          stopOnEntry = false,
+        },
+      }
+    end
   end,
 }

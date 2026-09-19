@@ -1,3 +1,7 @@
+-- Set leaders before defining any mappings.
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 -- default vim file browser
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
@@ -29,7 +33,10 @@ vim.opt.matchtime = 2 -- How long to show matching bracket
 vim.opt.cmdheight = 1 -- Command line height
 vim.opt.completeopt = { 'menu', 'noselect' }
 vim.opt.complete = { '.', 'w', 'b', 'u', 't', 'i', 'k' }
-vim.opt.path:append('/home/spider/Dokumenty/ObsidianVault/**')
+local obsidian_vault = vim.env.OBSIDIAN_VAULT or vim.fn.expand('~/Dokumenty/ObsidianVault')
+if vim.fn.isdirectory(obsidian_vault) == 1 then
+  vim.opt.path:append(obsidian_vault .. '/**')
+end
 vim.opt.pumheight = 10 -- Popup menu height
 vim.opt.pumblend = 10 -- Popup menu transparency
 vim.opt.winblend = 0 -- Floating window transparency
@@ -77,10 +84,6 @@ vim.opt.guicursor =
 -- Split behavior
 vim.opt.splitbelow = true -- Horizontal splits go below
 vim.opt.splitright = true -- Vertical splits go right
-
--- Key mappings
-vim.g.mapleader = ' ' -- Set leader key to space
-vim.g.maplocalleader = ' ' -- Set local leader key (NEW)
 
 -- Performance improvements
 vim.opt.redrawtime = 10000

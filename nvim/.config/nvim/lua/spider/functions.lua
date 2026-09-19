@@ -78,7 +78,15 @@ vim.api.nvim_create_autocmd('InsertEnter', {
 -- usuwane spacji z końca linii automatycznie przy zapisie
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
-  command = [[%s/\s\+$//e]],
+  callback = function()
+    if vim.bo.buftype ~= '' or not vim.bo.modifiable or vim.bo.filetype == 'markdown' then
+      return
+    end
+
+    local view = vim.fn.winsaveview()
+    vim.cmd([[keeppatterns %s/\s\+$//e]])
+    vim.fn.winrestview(view)
+  end,
 })
 
 -- Podświetlanie mieszania TAB i spacji

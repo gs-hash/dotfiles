@@ -41,8 +41,12 @@ function M.on_attach(_, bufnr)
   end, 'Format')
 
   -- ⚠️ diagnostyka
-  map('n', '[d', vim.diagnostic.goto_prev, 'Prev diagnostic')
-  map('n', ']d', vim.diagnostic.goto_next, 'Next diagnostic')
+  map('n', '[d', function()
+    vim.diagnostic.jump({ count = -1 })
+  end, 'Prev diagnostic')
+  map('n', ']d', function()
+    vim.diagnostic.jump({ count = 1 })
+  end, 'Next diagnostic')
   map('n', '<leader>e', vim.diagnostic.open_float, 'Line diagnostics')
   map('n', '<leader>q', vim.diagnostic.setqflist, 'Diagnostics (quickfix)')
 end

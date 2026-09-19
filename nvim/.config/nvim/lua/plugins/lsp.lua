@@ -1,35 +1,40 @@
 return {
   'neovim/nvim-lspconfig',
+  dependencies = { 'hrsh7th/cmp-nvim-lsp' },
   config = function()
-    -- 🧠 wspólne capabilities (jeśli używasz cmp to tu podepniesz)
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    local keymaps = require('spider.lsp_keymaps')
 
-    -- 🌙 LUA
-    vim.lsp.config('lua_ls', {
-      capabilities = capabilities,
-    })
-    vim.lsp.enable('lua_ls')
-
-    -- 📄 LATEX
-    vim.lsp.config('texlab', {})
-    vim.lsp.enable('texlab')
-
-    -- C#
-    vim.lsp.config('csharp_ls', {
-      cmd = { 'csharp-ls' },
-      filetypes = { 'cs' },
-      root_markers = {
-        '*.sln',
-        '*.csproj',
-        '.git',
-      },
+    local group = vim.api.nvim_create_augroup('lsp_keymaps', { clear = true })
+    vim.api.nvim_create_autocmd('LspAttach', {
+      group = group,
+      callback = function(args)
+        keymaps.on_attach(nil, args.buf)
+      end,
     })
 
-    vim.lsp.enable('csharp_ls')
+    local function enable(server, executable, config)
+      if vim.fn.executable(executable) == 0 then
+        return
+      end
 
-    -- 🦀 RUST (tu dokładamy)
-    vim.lsp.config('rust_analyzer', {
-      capabilities = capabilities,
+      vim.lsp.config(
+        server,
+        vim.tbl_deep_extend('force', {
+          capabilities = capabilities,
+        }, config or {})
+      )
+      vim.lsp.enable(server)
+    end
+
+    enable('lua_ls', 'lua-language-server')
+    enable('texlab', 'texlab')
+    enable('html', 'vscode-html-language-server')
+    if vim.fn.executable('roslyn-language-server') == 0 then
+      enable('csharp_ls', 'csharp-ls')
+    end
+
+    enable('rust_analyzer', 'rust-analyzer', {
       settings = {
         ['rust-analyzer'] = {
           cargo = {
@@ -41,10 +46,6 @@ return {
         },
       },
     })
-    vim.lsp.enable('rust_analyzer')
-
-    -- bash
-    vim.lsp.config('bashls', {})
-    vim.lsp.enable('bashls')
+    enable('bashls', 'bash-language-server')
   end,
 }
