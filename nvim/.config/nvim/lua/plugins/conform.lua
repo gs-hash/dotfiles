@@ -16,13 +16,17 @@ return {
         yaml = { 'prettier' },
         java = { 'google-java-format' },
         cs = { 'csharpier' },
+        razor = { lsp_format = 'fallback' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
       },
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_format = 'never',
-      },
+      format_on_save = function(bufnr)
+        local is_razor = vim.bo[bufnr].filetype == 'razor'
+        return {
+          timeout_ms = is_razor and 2000 or 500,
+          lsp_format = is_razor and 'fallback' or 'never',
+        }
+      end,
       formatters = {
         shfmt = {
           prepend_args = {
