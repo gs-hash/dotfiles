@@ -13,6 +13,7 @@ return {
         'java',
         'markdown',
         'python',
+        'razor',
       }
 
       treesitter.setup()
@@ -30,10 +31,12 @@ return {
 
       vim.api.nvim_create_autocmd('FileType', {
         group = group,
-        pattern = { 'c', 'cs', 'html', 'java', 'markdown', 'python' },
+        pattern = { 'c', 'cs', 'html', 'java', 'markdown', 'python', 'razor' },
         callback = function(args)
           vim.treesitter.start(args.buf)
-          vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          if vim.bo[args.buf].filetype ~= 'razor' then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
         end,
       })
     end,
