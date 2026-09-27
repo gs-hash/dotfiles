@@ -17,6 +17,7 @@ return {
         java = { 'google-java-format' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
+        xml = { 'xmllint' },
       },
       format_on_save = {
         timeout_ms = 500,
