@@ -1,5 +1,6 @@
 # default programs
 export EDITOR="nvim"
+export SUDO_EDITOR=/home/linuxbrew/.linuxbrew/bin/nvim
 export BROWSER="firefox"
 
 # history files

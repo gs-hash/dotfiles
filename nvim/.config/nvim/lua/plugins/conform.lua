@@ -19,6 +19,7 @@ return {
         razor = { lsp_format = 'fallback' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
+        xml = { 'xmllint' },
       },
       format_on_save = function(bufnr)
         local is_razor = vim.bo[bufnr].filetype == 'razor'
