@@ -34,7 +34,10 @@ return {
         pattern = { 'c', 'cs', 'html', 'java', 'markdown', 'python', 'razor' },
         callback = function(args)
           vim.treesitter.start(args.buf)
-          if vim.bo[args.buf].filetype ~= 'razor' then
+          local filetype = vim.bo[args.buf].filetype
+
+          -- C# and Razor have no Treesitter indent queries; keep their built-in indentexpr.
+          if filetype ~= 'cs' and filetype ~= 'razor' then
             vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           end
         end,
