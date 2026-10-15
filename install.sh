@@ -8,9 +8,11 @@ PACKAGES=(
     tmux
     nvim
     starship
-    alacritty
+    kitty
+    atuin
+    wezterm
     zellij
     zsh
 )
 
-stow -R "${PACKAGES[@]}"
+stow --dir="$SCRIPT_DIR" --target="$HOME" "$@" --restow "${PACKAGES[@]}"

@@ -70,7 +70,9 @@ keymap.set('n', '<leader>tp', '<cmd>tabp<CR>', { desc = 'Go to previous tab' }) 
 keymap.set('n', '<leader>tf', '<cmd>tabnew %<CR>', { desc = 'Open current buffer in new tab' }) --  move current buffer to new tab
 
 -- mini.files
-keymap.set('n', '-', '<Cmd>lua MiniFiles.open()<CR>', { desc = 'Mini.Files manager' })
+keymap.set('n', '-', function()
+  MiniFiles.open(vim.fn.getcwd(), false)
+end, { desc = 'Mini.Files manager' })
 
 -- Undotree
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)

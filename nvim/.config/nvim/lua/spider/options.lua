@@ -109,7 +109,7 @@ end
 
 -- ustawienia wbudowanego formatera tekstu
 vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"
-vim.opt.textwidth = 80
+vim.opt.textwidth = 0 -- Disable automatic line breaking at a fixed width
 
 -- słownik
 vim.opt.spelllang = { 'pl', 'en' } -- PL + fallback EN
