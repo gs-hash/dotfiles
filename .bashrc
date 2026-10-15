@@ -50,8 +50,6 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --bash)"
 
-. "$HOME/.atuin/bin/env"
-
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash)"
 

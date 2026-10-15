@@ -9,7 +9,6 @@ export DOTNET_ROOT=/usr/local/share/dotnet
 # PATH
 typeset -U path PATH
 path+=(
-	"$HOME/.atuin/bin"
 	"$HOME/.dotnet/tools"
 	"/opt/homebrew/bin"
 )

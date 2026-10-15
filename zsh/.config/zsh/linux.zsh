@@ -20,7 +20,6 @@ path+=(
   "/usr/local/go/bin"
   "$HOME/work/bin"
   "$HOME/skrypty"
-  "$HOME/.atuin/bin"
   "$HOME/.dotnet/tools"
   "$HOME/.cargo/bin"
   "$HOME/.local/bin"
@@ -38,3 +37,9 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
+# fnm
+FNM_PATH="/home/spider/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --shell bash)"
+fi
