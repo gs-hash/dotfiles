@@ -15,6 +15,8 @@ vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d')
 -- paste last yank
 vim.keymap.set('n', '<leader>p', '"0p')
 
+vim.keymap.set('x', '<leader>y', '"+y', { desc = 'Copy selection to system clipboard' })
+
 -- duplicate line (normal mode)
 vim.keymap.set('n', '<leader>dd', 'yyp', {
   desc = 'Duplicate line',
