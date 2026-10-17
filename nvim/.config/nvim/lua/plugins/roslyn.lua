@@ -32,5 +32,6 @@ return {
     })
 
     require('roslyn').setup(opts)
+    require('spider.roslyn_rename').setup()
   end,
 }
