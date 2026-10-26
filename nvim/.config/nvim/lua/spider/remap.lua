@@ -73,7 +73,7 @@ keymap.set('n', '<leader>tf', '<cmd>tabnew %<CR>', { desc = 'Open current buffer
 
 -- mini.files
 keymap.set('n', '-', function()
-  MiniFiles.open(vim.fn.getcwd(), false)
+  require('mini.files').open()
 end, { desc = 'Mini.Files manager' })
 
 -- Undotree
